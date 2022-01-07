@@ -1,4 +1,4 @@
-#I just found out the google use this code I've been working on
+#Google also uses a similar code 
 #Libraries needed
 import phonenumbers
 import tkinter as tk
@@ -32,6 +32,7 @@ def CreateWidgets():
     root.validLabel = Label(root, width=20, bg="slateblue3")
     root.validLabel.grid(row=7, column=1, padx=10, pady=5, columnspan=2)
 
+    #Creating the "FETCH" Button to get the details
     getDetailsButton = Button(root, text="FETCH", command = getDetails, bg="green")
     getDetailsButton.grid(row=1, column=1, padx=5, pady=5)
     clearButton = Button(root, text="CLEAR", command = clearEntries, bg="red")
@@ -51,7 +52,7 @@ def getDetails():
     #validating phone number
     phone_number_valid = phonenumbers.is_valid_number(phone_number)
 
-    #Clearing former phonenumber entries if there are any
+    #Clearing former phonenumber entries if there are any when clear is hit
     root.numberLabel.config(text="")
     root.providerLabel.config(text="")
     root.timezoneLabel.config(text="")
