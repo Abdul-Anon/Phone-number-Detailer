@@ -3,6 +3,7 @@
 import phonenumbers
 import tkinter as tk
 from tkinter import *
+from tkinter import messagebox
 from phonenumbers import carrier, timezone, geocoder
 
 #the widgets
@@ -32,36 +33,38 @@ def CreateWidgets():
     root.validLabel = Label(root, width=20, bg="slateblue3")
     root.validLabel.grid(row=7, column=1, padx=10, pady=5, columnspan=2)
 
-    #Creating the "FETCH" Button to get the details
     getDetailsButton = Button(root, text="FETCH", command = getDetails, bg="green")
     getDetailsButton.grid(row=1, column=1, padx=5, pady=5)
     clearButton = Button(root, text="CLEAR", command = clearEntries, bg="red")
     clearButton.grid(row=1, column=2, padx=5, pady=5)
 
 def getDetails():
-    phone_number = numberInput.get()
-    phone_number = phonenumbers.parse(phone_number)
-    #Phone carrier/Telecom
-    phone_number_carrier = carrier.name_for_number(phone_number, "en")
-    #nationale number
-    national_number = phone_number.national_number
-    #getting region of phone number
-    phone_number_country = geocoder.description_for_number(phone_number, "en")
-    #getting timezone of phone number
-    phone_number_timezone = timezone.time_zones_for_number(phone_number)
-    #validating phone number
-    phone_number_valid = phonenumbers.is_valid_number(phone_number)
+    try:
+        phone_number = numberInput.get()
+        phone_number = phonenumbers.parse(phone_number)            
+        #Phone carrier/Telecom
+        phone_number_carrier = carrier.name_for_number(phone_number, "en")
+        #national number
+        national_number = phone_number.national_number
+        #getting region of phone number
+        phone_number_country = geocoder.description_for_number(phone_number, "en")
+        #getting timezone of phone number
+        phone_number_timezone = timezone.time_zones_for_number(phone_number)
+        #validating phone number
+        phone_number_valid = phonenumbers.is_valid_number(phone_number)
 
-    #Clearing former phonenumber entries if there are any when clear is hit
-    root.numberLabel.config(text="")
-    root.providerLabel.config(text="")
-    root.timezoneLabel.config(text="")
+        #Clearing former phonenumber entries if there are any
+        root.numberLabel.config(text="")
+        root.providerLabel.config(text="")
+        root.timezoneLabel.config(text="")
    
-    #Previewing new results
-    root.numberLabel.config(text=str(national_number))
-    root.providerLabel.config(text=str(phone_number_carrier))
-    root.timezoneLabel.config(text=str(phone_number_timezone))
-    root.validLabel.config(text=str(phone_number_valid))
+        #Previewing new results
+        root.numberLabel.config(text=str(national_number))
+        root.providerLabel.config(text=str(phone_number_carrier))
+        root.timezoneLabel.config(text=str(phone_number_timezone))
+        root.validLabel.config(text=str(phone_number_valid))
+    except Exception as e:
+        messagebox.showerror("❌ERROR❌", e)
     
 def clearEntries():
     root.numberLabel.config(text="")
@@ -73,7 +76,10 @@ root = tk.Tk()
 root.title("Phone Number Details Checker")
 root.config(background="darkslateblue")
 root.geometry("445x250")
-root.resizable(False, False)
+root.minsize(445,250)
+root.maxsize(445,250)
+icon = PhotoImage(file = 'Phoneicon.png')   
+root.iconphoto(False, icon)
 numberInput = StringVar()
 CreateWidgets()
 #infinite loop that keeps application running
